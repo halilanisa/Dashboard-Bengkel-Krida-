@@ -5,7 +5,7 @@ let stackedBarChartInstance;
 let jasaPartChartInstance = null;
 let dashboardLoaded = false;
 
-const BASE_URL = "https://dashboard-bengkel-krida-production.up.railway.app";
+const BASE_URL = "https://dashboard-bengkel-krida-production.up.railway.app/";
 
 /* =====================
    LOAD FILTERS & FILL SELECT
