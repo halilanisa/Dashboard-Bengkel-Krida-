@@ -5,11 +5,13 @@ let stackedBarChartInstance;
 let jasaPartChartInstance = null;
 let dashboardLoaded = false;
 
+const BASE_URL = "https://dashboard-bengkel-krida-production.up.railway.app";
+
 /* =====================
    LOAD FILTERS & FILL SELECT
 ==================== */
 async function loadFilters() {
-  const res = await fetch("http://localhost:8000/filters");
+  const res = await fetch(`${BASE_URL}/filters`);
   const data = await res.json();
 
   fillSelect("filter-nama", data.nama);
@@ -51,7 +53,9 @@ function buildQuery(params) {
 ===================== */
 async function refreshData() {
   try {
-    const res = await fetch("http://localhost:8000/refresh", { method: "POST" });
+    const res = await fetch(`${BASE_URL}/refresh`, {
+      method: "POST"
+    });
 
     if (!res.ok) {
       const errData = await res.json().catch(() => ({}));
@@ -75,7 +79,7 @@ async function refreshData() {
 ===================== */
 async function refreshKPB12() {
   try {
-    const res = await fetch("http://localhost:8000/refresh-kpb-12", {
+    const res = await fetch(`${BASE_URL}/refresh-kpb-12`, {
       method: "POST"
     });
 
@@ -811,7 +815,7 @@ async function loadOverviewData() {
   const params = buildQuery(getGlobalFilters());
   
   try {
-    const res = await fetch(`http://localhost:8000/overview?${params}`);
+        const res = await fetch(`${BASE_URL}/overview?${params}`);
     
     if (!res.ok) {
       console.error("Fetch error:", res.status, res.statusText);
@@ -945,7 +949,7 @@ function renderKPB1Page() {
     if (endDate)   params.append("end_date", endDate);
 
     window.open(
-      `http://localhost:8000/kpb1/download-potential?${params.toString()}`,
+      `${BASE_URL}/kpb1/download-potential?${params.toString()}`,
       "_blank"
     );
   });
@@ -970,7 +974,7 @@ async function loadKPB1Data() {
     if (startDate) params.append("start_date", startDate);
     if (endDate)   params.append("end_date", endDate);
 
-    const res = await fetch(`http://localhost:8000/kpb1?${params.toString()}`);
+    const res = await fetch(`${BASE_URL}/kpb1?${params.toString()}`);
     if (!res.ok) throw new Error("Gagal fetch data KPB1");
 
     const data = await res.json();
