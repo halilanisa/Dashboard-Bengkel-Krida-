@@ -14,6 +14,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+
 # =====================
 # DATABASE (RAILWAY)
 # =====================
@@ -717,3 +718,4 @@ def download_potential(
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         headers={"Content-Disposition": "attachment; filename=potential_kpb1.xlsx"}
     )
+
