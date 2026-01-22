@@ -1,127 +1,79 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Dashboard Penjualan KRIDA BIMA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Chart.js -->
+  <!-- Chart.js & plugin -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tinycolor2@1.4.2/dist/tinycolor-min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+  <!-- Boxicons -->
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+  <!-- Leaflet -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    defer
+  ></script>
 
   <!-- Style -->
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div class="app">
-
-
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <h2 class="logo"></h2>
-
-    <!-- REFRESH DATA -->
-    <button class="refresh-btn" onclick="refreshData()">
-      <i class='bx bx-refresh'></i> Muat Ulang Data
-    </button>
-
-    <hr class="sidebar-divider">
-
-    <!-- NAVIGATION -->
-    <nav>
-      <ul>
-      <li class="nav-item active" data-page="home"><i class='bx bx-home-alt'></i> Beranda</li>
-      <li class="nav-item" data-page="overview"><i class='bx bx-file'></i> Ringkasan</li>
-      <li class="nav-item" data-page="trend"><i class='bx bx-trending-up'></i> Tren</li>
-      <li class="nav-item" data-page="penjualan"><i class='bx bx-receipt'></i> Penjualan</li>
-      <li class="nav-item" data-page="produk"><i class='bx bx-package'></i> Produk</li>
-      <li class="nav-item" data-page="pekerja"><i class='bx bx-group'></i> Pekerja</li>
-      <li class="nav-item" data-page="pelanggan"><i class='bx bx-user'></i> Pelanggan</li>
-      <li class="nav-item" data-page="wilayah"><i class='bx bx-map'></i> Wilayah</li>
-      <li class="nav-item" data-page="unduhdata"><i class='bx bx-download'></i> Unduh Data</li>
-      </ul>
-    </nav>
-  </aside>
-
-  <!-- MAIN CONTENT -->
-  <main class="main">
-
-    <!-- PAGE HEADER -->
-    <div class="page-header">
-
-      <div id="breadcrumb" class="breadcrumb"></div>
-      <h1 id="page-title"></h1>
-
-      <!-- FILTER AKAN MASUK KE SINI -->
-      <div id="filter-container"></div>
-
+  <!-- ================= NAVBAR ================= -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <img src="logo_krida.png" class="logo" alt="KRIDA">
     </div>
 
-    <!-- CONTENT -->
-    <div id="content"></div>
-
-    <!-- FOOTER -->
-    <footer class="footer">
-      © 2026 Dashboard Penjualan KRIDA BIMA
-    </footer>
-
-  </main>
-
-
-</div>
-
-  <!-- FILTER TEMPLATE -->
-  <template id="filter-template">
-    <div class="filter-bar">
-
-      <div class="filter-group">
-        <label>Tanggal Invoice</label>
-        <div class="date-range">
-          <input type="date" id="startDate" class="global-filter">
-          <span>–</span>
-          <input type="date" id="endDate" class="global-filter">
-        </div>
-      </div>
-
-      <div class="filter-group">
-        <label>Penjualan</label>
-        <select id="filter-penjualan" class="global-filter">
-          <option value="">Semua</option>
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label>Wiraniaga</label>
-        <select id="filter-wiraniaga" class="global-filter">
-          <option value="">Semua</option>
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label>Salesman Status</label>
-        <select id="filter-status" class="global-filter">
-          <option value="">Semua</option>
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label>Supervisor</label>
-        <select id="filter-supervisor" class="global-filter">
-          <option value="">Semua</option>
-        </select>
-      </div>
-
+    <div class="nav-right">
+      <a href="#" onclick="showPage('home')">Home</a>
+      <a href="#" onclick="showPage('unit')">Unit Entri</a>
+      <a href="#" onclick="showPage('kpb12')">KPB 1</a>
     </div>
-  </template>
+  </nav>
 
+  <!-- ================= HOME / LANDING ================= -->
+  <section id="home" class="page landing">
+    <div class="landing-content">
+      <!-- KIRI -->
+      <div class="landing-text">
+        <h1>DASHBOARD BENGKEL</h1>
+        <h2>PT KRIDA DINAMIK AUTONUSA CABANG BIMA</h2>
+        <p>Visualisasi Data Unit Entri Berbasis Realtime</p>
+      </div>
 
-<!-- MAIN SCRIPT -->
-<script src="main.js"></script>
+      <!-- KANAN -->
+      <div class="landing-visual">
+        <img src="background.png" alt="Dashboard Illustration">
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= UNIT ENTRI ================= -->
+  <section id="unit" class="page" style="display:none">
+    <div id="dashboard">
+      <div id="content"></div>
+    </div>
+  </section>
+
+  <!-- ================= KPB 1 & 2 ================= -->
+  <section id="kpb12" class="page" style="display:none">
+    <div id="kpb1-page"></div>
+  </section>
+
+  <!-- ================= SCRIPT ================= -->
+  <script src="main.js"></script>
 
 </body>
 </html>
