@@ -13,7 +13,8 @@ from sqlalchemy import create_engine
 from oauth2client.service_account import ServiceAccountCredentials
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+from fastapi.staticfiles import StaticFiles
+import os
 
 # =====================
 # DATABASE (RAILWAY)
@@ -32,6 +33,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Mount frontend folder
+app.mount("/frontend", StaticFiles(directory=os.path.join(os.path.dirname(__file__), "../frontend")), name="frontend")
 
 # =====================
 # GOOGLE SHEETS (ENV)
