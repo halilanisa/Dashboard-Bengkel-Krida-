@@ -430,7 +430,9 @@ def overview(
     rata_per_hari = float(valid_days_bulan_ini.sum() / valid_days_bulan_ini.count()) if valid_days_bulan_ini.count() > 0 else 0
     last_day_in_data = df_bulan_ini["tanggal"].dt.day.max() if not df_bulan_ini.empty else 0
     sisa_hari = max(monthrange(year, month)[1] - last_day_in_data, 0)
-    prediksi_bulan_ini = int(rata_per_hari * sisa_hari)
+    prediksi_bulan_ini = int(
+        daily_sum_bulan_ini.sum() + rata_per_hari * sisa_hari
+    )
     persentase = float(total_sekarang / target * 100) if target > 0 and total_sekarang > 0 else 0
 
     # Trend harian 
