@@ -418,23 +418,47 @@ function renderCharts(data) {
   gradPrev.addColorStop(1, "rgba(255,183,3,0.25)");
 
   // ================================
-  // Plugin angka kecil di atas bar
+  // DATA SEKARANG
+  // ================================
+  const labels = data.distribusi_per_nama_sekarang.map(d => d.nama);
+  const nowData = data.distribusi_per_nama_sekarang.map(d => d.jumlah);
+
+  // ================================
+  // JUMLAH HARI AKTIF (UNTUK RATA-RATA)
+  // ================================
+  const totalHariAktif =
+    Array.isArray(data.trend_harian) && data.trend_harian.length > 0
+      ? data.trend_harian.length
+      : 1;
+
+  // ================================
+  // Plugin angka JUMLAH + RATA-RATA di atas bar
   // ================================
   const valuePlugin = {
     id: "valuePlugin",
     afterDatasetsDraw(chart) {
-      const { ctx, data } = chart;
+      const { ctx } = chart;
       ctx.save();
-      ctx.font = "bold 10px Arial";
-      ctx.fillStyle = "#374151";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "bottom";
 
-      data.datasets.forEach((dataset, datasetIndex) => {
-        chart.getDatasetMeta(datasetIndex).data.forEach((bar, i) => {
+      chart.data.datasets.forEach((dataset, datasetIndex) => {
+        const meta = chart.getDatasetMeta(datasetIndex);
+
+        meta.data.forEach((bar, i) => {
           const val = dataset.data[i];
           if (val > 0) {
-            ctx.fillText(val, bar.x, bar.y - 4);
+            const avg = (val / totalHariAktif).toFixed(1);
+
+            // JUMLAH (atas)
+            ctx.font = "bold 10px Arial";
+            ctx.fillStyle = "#374151";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "bottom";
+            ctx.fillText(val, bar.x, bar.y - 14);
+
+            // RATA-RATA (bawah)
+            ctx.font = "normal 9px Arial";
+            ctx.fillStyle = "#6b7280";
+            ctx.fillText(`avg ${avg}`, bar.x, bar.y - 4);
           }
         });
       });
@@ -442,12 +466,6 @@ function renderCharts(data) {
       ctx.restore();
     }
   };
-
-  // ================================
-  // DATA SEKARANG
-  // ================================
-  const labels = data.distribusi_per_nama_sekarang.map(d => d.nama);
-  const nowData = data.distribusi_per_nama_sekarang.map(d => d.jumlah);
 
   // ================================
   // CEK DATA LALU (hanya ada jika filter)
