@@ -396,7 +396,6 @@ function renderCharts(data) {
     },
     plugins: [barValuePlugin] 
   });
-
   // ================================
   // Distribusi Unit Per Nama
   // (Sekarang vs Lalu — DINAMIS)
@@ -424,7 +423,7 @@ function renderCharts(data) {
   const nowData = data.distribusi_per_nama_sekarang.map(d => d.jumlah);
 
   // ================================
-  // JUMLAH HARI AKTIF (UNTUK RATA-RATA)
+  // JUMLAH HARI AKTIF (UNTUK AVG)
   // ================================
   const totalHariAktif =
     Array.isArray(data.trend_harian) && data.trend_harian.length > 0
@@ -432,7 +431,7 @@ function renderCharts(data) {
       : 1;
 
   // ================================
-  // Plugin angka JUMLAH + RATA-RATA di atas bar
+  // Plugin angka JUMLAH + AVG di atas bar
   // ================================
   const valuePlugin = {
     id: "valuePlugin",
@@ -446,16 +445,16 @@ function renderCharts(data) {
         meta.data.forEach((bar, i) => {
           const val = dataset.data[i];
           if (val > 0) {
-            const avg = (val / totalHariAktif).toFixed(1);
+            const avg = (val / totalHariAktif).toFixed(2);
 
-            // JUMLAH (atas)
+            // JUMLAH
             ctx.font = "bold 10px Arial";
             ctx.fillStyle = "#374151";
             ctx.textAlign = "center";
             ctx.textBaseline = "bottom";
             ctx.fillText(val, bar.x, bar.y - 14);
 
-            // RATA-RATA (bawah)
+            // AVG
             ctx.font = "normal 9px Arial";
             ctx.fillStyle = "#6b7280";
             ctx.fillText(`avg ${avg}`, bar.x, bar.y - 4);
@@ -468,7 +467,7 @@ function renderCharts(data) {
   };
 
   // ================================
-  // CEK DATA LALU (hanya ada jika filter)
+  // CEK DATA LALU
   // ================================
   const hasLalu =
     data.is_filter_tanggal === true &&
@@ -516,25 +515,13 @@ function renderCharts(data) {
   // ================================
   distribusiNamaChartInstance = new Chart(ctx, {
     type: "bar",
-    data: {
-      labels,
-      datasets
-    },
+    data: { labels, datasets },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      layout: {
-        padding: { bottom: 24 }
-      },
+      layout: { padding: { bottom: 24 } },
       plugins: {
-        legend: {
-          display: false,
-          labels: {
-            color: "#374151",
-            boxWidth: 12,
-            font: { size: 11 }
-          }
-        },
+        legend: { display: false },
         tooltip: {
           backgroundColor: "#fff",
           titleColor: "#111",
@@ -547,7 +534,12 @@ function renderCharts(data) {
           bodyFont: { size: 10 },
           callbacks: {
             label(ctx) {
-              return `${ctx.dataset.label}: ${ctx.parsed.y}`;
+              const val = ctx.parsed.y;
+              const avg = (val / totalHariAktif).toFixed(2);
+              return [
+                `${ctx.dataset.label}: ${val}`,
+                `Avg: ${avg}`
+              ];
             }
           }
         }
@@ -558,10 +550,7 @@ function renderCharts(data) {
           ticks: {
             color: "#9ca3af",
             font: { size: 10 },
-            padding: 6,
             autoSkip: false,
-            maxRotation: 0,
-            minRotation: 0,
             callback(value) {
               const label = this.getLabelForValue(value);
               return label.split(" ").slice(0, 2).join(" ");
@@ -570,21 +559,11 @@ function renderCharts(data) {
         },
         y: {
           beginAtZero: true,
-          grid: {
-            color: "#f1f5f9",
-            drawBorder: false
-          },
-          ticks: {
-            color: "#9ca3af",
-            font: { size: 10 },
-            stepSize: 10
-          }
+          grid: { color: "#f1f5f9", drawBorder: false },
+          ticks: { color: "#9ca3af", font: { size: 10 }, stepSize: 10 }
         }
       },
-      interaction: {
-        mode: "index",
-        intersect: false
-      }
+      interaction: { mode: "index", intersect: false }
     },
     plugins: [valuePlugin]
   });
