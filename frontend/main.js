@@ -445,7 +445,7 @@ function renderCharts(data) {
         meta.data.forEach((bar, i) => {
           const val = dataset.data[i];
           if (val > 0) {
-            const avg = (val / totalHariAktif).toFixed(2);
+            const avg = Math.round(val / totalHariAktif);
 
             // JUMLAH
             ctx.font = "bold 10px Arial";
@@ -535,7 +535,7 @@ function renderCharts(data) {
           callbacks: {
             label(ctx) {
               const val = ctx.parsed.y;
-              const avg = (val / totalHariAktif).toFixed(2);
+              const avg = Math.round(val / totalHariAktif);
               return [
                 `${ctx.dataset.label}: ${val}`,
                 `Avg: ${avg}`
