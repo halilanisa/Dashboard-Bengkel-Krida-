@@ -532,7 +532,9 @@ def overview(
         "selisih": safe_number(selisih),
         "status": status,
         "is_filter_tanggal": pakai_filter_tanggal,
-        "rata_rata_unit_entri": safe_number(round(rata_unit, 0)),
+        "rata_rata_unit_entri": safe_number(
+            math.floor(rata_unit + 0.5)
+        ),
         "target": target,
         "sisa_hari": safe_number(int(sisa_hari)),
         "prediksi_bulan_ini": safe_number(prediksi_bulan_ini),
