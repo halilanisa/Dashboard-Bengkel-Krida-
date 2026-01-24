@@ -521,7 +521,7 @@ function renderCharts(data) {
       maintainAspectRatio: false,
       layout: { padding: { bottom: 24 } },
       plugins: {
-        legend: { display: false },
+        legend: { display: true },
         tooltip: {
           backgroundColor: "#fff",
           titleColor: "#111",
