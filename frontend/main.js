@@ -396,6 +396,7 @@ function renderCharts(data) {
     },
     plugins: [barValuePlugin] 
   });
+
   // ================================
   // Distribusi Unit Per Nama
   // (Sekarang vs Lalu — DINAMIS)
@@ -447,12 +448,19 @@ function renderCharts(data) {
           if (val > 0) {
             const avg = Math.round(val / totalHariAktif);
 
+            const prefix =
+              dataset.label === "Sekarang"
+                ? "M:"
+                : dataset.label === "Lalu"
+                ? "-M:"
+                : "";
+
             // JUMLAH
             ctx.font = "bold 10px Arial";
             ctx.fillStyle = "#374151";
             ctx.textAlign = "center";
             ctx.textBaseline = "bottom";
-            ctx.fillText(val, bar.x, bar.y - 14);
+            ctx.fillText(`${prefix} ${val}`, bar.x, bar.y - 14);
 
             // AVG
             ctx.font = "normal 9px Arial";
@@ -521,7 +529,7 @@ function renderCharts(data) {
       maintainAspectRatio: false,
       layout: { padding: { bottom: 24 } },
       plugins: {
-        legend: { display: true },
+        legend: { display: false },
         tooltip: {
           backgroundColor: "#fff",
           titleColor: "#111",
@@ -536,9 +544,17 @@ function renderCharts(data) {
             label(ctx) {
               const val = ctx.parsed.y;
               const avg = Math.round(val / totalHariAktif);
+
+              const prefix =
+                ctx.dataset.label === "Sekarang"
+                  ? "M"
+                  : ctx.dataset.label === "Lalu"
+                  ? "-M"
+                  : ctx.dataset.label;
+
               return [
-                `${ctx.dataset.label}: ${val}`,
-                `Avg: ${avg}`
+                `${prefix}: ${val}`,
+                `avg: ${avg}`
               ];
             }
           }
