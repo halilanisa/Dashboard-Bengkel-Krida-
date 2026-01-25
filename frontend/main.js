@@ -527,7 +527,7 @@ function renderCharts(data) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      layout: { padding: { bottom: 24 } },
+      layout: { padding: { bottom: 40 } },
       plugins: {
         legend: { display: false },
         tooltip: {
