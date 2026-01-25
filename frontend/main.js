@@ -356,7 +356,7 @@ function renderCharts(data) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      layout: { padding: { bottom: 30 } }, 
+      layout: { padding: { bottom: 40 } }, 
       plugins: {
         legend: { display: false },
         tooltip: {
@@ -385,6 +385,7 @@ function renderCharts(data) {
         },
         y: {
           beginAtZero: true,
+          suggestedMax: Math.max(...datasets.flatMap(d => d.data)) * 1.15,
           grid: { color: "#f1f5f9", drawBorder: false },
           ticks: { color: "#9ca3af", stepSize: 10 }
         }
