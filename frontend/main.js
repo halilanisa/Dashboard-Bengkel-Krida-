@@ -385,7 +385,6 @@ function renderCharts(data) {
         },
         y: {
           beginAtZero: true,
-          suggestedMax: Math.max(...datasets.flatMap(d => d.data)) * 1.15,
           grid: { color: "#f1f5f9", drawBorder: false },
           ticks: { color: "#9ca3af", stepSize: 10 }
         }
